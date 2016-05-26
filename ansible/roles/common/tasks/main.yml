@@ -1,0 +1,63 @@
+---
+- name: 'Configure system'
+  include: config.yml
+  tags:
+    - bootstrap
+
+- name: 'Update APT package cache'
+  action: apt update_cache=yes
+
+- name: 'Upgrade APT to the latest packages'
+  action: apt upgrade=safe
+
+- name: 'Install common packages'
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - git
+    - screen
+    - weavedconnectd
+    - supervisor
+    - lsb-release
+    - python-dev
+    - python-openssl
+    - bison
+    - flex
+    - libncurses5-dev
+    - mysql-server
+    - libmysqlclient-dev
+    - libxml2-dev
+    - libexpat1-dev
+    - libradiusclient-ng2
+    - libradiusclient-ng-dev
+    - libcurl3-dev
+    - libxmlrpc-core-c3
+    - libxmlrpc-core-c3-dev
+    - libperl-dev
+    - libsnmp-dev
+    - libconfuse0
+    - libconfuse-dev
+    - build-essential
+    - openssl
+    - perl
+    - libdbi-perl
+    - libdbd-mysql-perl
+    - libdbd-pg-perl
+    - libfrontier-rpc-perl
+    - libterm-readline-gnu-perl
+    - libberkeleydb-perl
+    - libxml2
+    - libxml2-dev
+    - libxmlrpc-core-c3-dev
+    - libpcre3
+    - libpcre3-dev
+    - subversion
+    - lgit
+    - ngrep
+    - libssl-dev
+
+
+- name: 'Fix rsyslog'
+  include: rsyslog.yml
+
+- name: 'Fix ipv6 advertisements'
+  include: dhcpcd.yml
