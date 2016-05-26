@@ -61,7 +61,7 @@ target/
 *.pem
 
 # idea stuff
-.idea/
+.idea/*
 
 # ansible
 /ansible/ansible.cfg
