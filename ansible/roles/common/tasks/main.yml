@@ -51,7 +51,6 @@
     - libpcre3
     - libpcre3-dev
     - subversion
-    - lgit
     - ngrep
     - libssl-dev
 

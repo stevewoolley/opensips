@@ -1,0 +1,48 @@
+---
+  - name: 'Create opensips user'
+    user: name=opensips
+          shell=/sbin/nologin
+          home=/usr/local/etc/opensips
+
+  - name: 'Clone opensips repo'
+    git: repo=git://github.com/OpenSIPS/opensips.git
+         dest=/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}
+         version={{ opensips_major_ver }}.{{ opensips_minor_ver }}
+         accept_hostkey=yes
+
+  - name: 'clean opensips'
+    command: "make mantainer-clean"
+    args:
+      chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+
+  - name: 'make opensips'
+    command: "make"
+    args:
+      chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+
+  - name: 'make opensips modules'
+    command: "make include_modules=\"{{ opensips_modules }}\" modules"
+    args:
+      chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+
+  - name: 'install opensips'
+    command: "make include_modules=\"{{ opensips_modules }}\" install"
+    args:
+      chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+
+  - name: 'Setup etc default opensips'
+    template: src=opensips.defaults.j2 dest=/etc/default/opensips mode=0644
+
+  - name: 'Setup etc init.d opensips'
+    template: src=opensips.init.j2 dest=/etc/init.d/opensips mode=0755
+
+  - name: Ensures usr local etc opensips dir exists
+    file: path=/usr/local/etc/opensips
+          state=directory
+          recurse=yes
+
+  - name: 'Setup opensips.cfg'
+    template: src=opensips.cfg.j2
+              dest=/usr/local/etc/opensips/opensips.cfg
+              mode=0644
+
