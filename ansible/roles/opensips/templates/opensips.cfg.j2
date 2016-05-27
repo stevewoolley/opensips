@@ -24,7 +24,7 @@ children=4
 auto_aliases=no
 
 listen=udp:{{ ansible_eth0.ipv4.address }}:5060
-listen=tcp:{{ listen_ip_addr | ipaddr }}:5060
+listen=tcp:{{ ansible_eth0.ipv4.address }}:5060
 
 ####### Modules Section ########
 
