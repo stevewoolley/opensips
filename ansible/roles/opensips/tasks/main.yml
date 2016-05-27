@@ -9,26 +9,31 @@
          dest=/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}
          version={{ opensips_major_ver }}.{{ opensips_minor_ver }}
          accept_hostkey=yes
+    register: gitclone
 
-  - name: 'clean opensips'
+  - name: 'Clean opensips'
     command: "make mantainer-clean"
     args:
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+    when: gitclone.changed
 
-  - name: 'make opensips'
+  - name: 'Make opensips'
     command: "make"
     args:
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+    when: gitclone.changed
 
-  - name: 'make opensips modules'
+  - name: 'Make opensips modules'
     command: "make include_modules=\"{{ opensips_modules }}\" modules"
     args:
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+    when: gitclone.changed
 
-  - name: 'install opensips'
+  - name: 'Install opensips'
     command: "make include_modules=\"{{ opensips_modules }}\" install"
     args:
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
+    when: gitclone.changed
 
   - name: 'Setup etc default opensips'
     template: src=opensips.defaults.j2 dest=/etc/default/opensips mode=0644
@@ -36,7 +41,7 @@
   - name: 'Setup etc init.d opensips'
     template: src=opensips.init.j2 dest=/etc/init.d/opensips mode=0755
 
-  - name: Ensures usr local etc opensips dir exists
+  - name: 'Ensures usr local etc opensips dir exists'
     file: path=/usr/local/etc/opensips
           state=directory
           recurse=yes
@@ -46,3 +51,7 @@
               dest=/usr/local/etc/opensips/opensips.cfg
               mode=0644
 
+  - name: 'Start opensips'
+    service:  name=opensips
+              state=reloaded
+              enabled=yes
