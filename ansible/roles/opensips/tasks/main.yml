@@ -11,6 +11,9 @@
          accept_hostkey=yes
     register: gitclone
 
+  - name: 'Setup makefile'
+    template: src=makefile.conf.j2 dest=/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}/Makefile.conf mode=0644
+
   - name: 'Clean opensips'
     command: "make mantainer-clean"
     args:
@@ -38,8 +41,10 @@
   - name: 'Setup etc default opensips'
     template: src=opensips.defaults.j2 dest=/etc/default/opensips mode=0644
 
-  - name: 'Setup etc init.d opensips'
-    template: src=opensips.init.j2 dest=/etc/init.d/opensips mode=0755
+  - name: 'Create opensips pid directory'
+    file: path=/var/run/opensips
+          state=directory
+          recurse=yes
 
   - name: 'Ensures usr local etc opensips dir exists'
     file: path=/usr/local/etc/opensips
@@ -51,7 +56,5 @@
               dest=/usr/local/etc/opensips/opensips.cfg
               mode=0644
 
-  - name: 'Start opensips'
-    service:  name=opensips
-              state=reloaded
-              enabled=yes
+  - name: 'Supervisor script for opensips'
+    template: src=opensips.conf.j2 dest=/etc/supervisor/conf.d/opensips.conf mode=0644

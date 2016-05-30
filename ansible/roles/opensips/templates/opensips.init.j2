@@ -40,7 +40,7 @@ test -f $DAEMON || exit 0
 
 set -e
 
-OPTIONS="-P $PIDFILE -m {{ opensips_shared_mem }} -M {{ opensips_pkg_mem }} -u $USER -g $GROUP"
+OPTIONS="-P $PIDFILE -m {{ opensips_shared_mem }} -M {{ opensips_pkg_mem }} -u {{ opensips_user }} -g {{ opensips_group }}"
 
 case "$1" in
   start)

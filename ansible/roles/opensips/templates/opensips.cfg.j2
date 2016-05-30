@@ -4,10 +4,9 @@
 
 ####### Global Parameters #########
 
-debug=3
+log_level=3
 log_stderror=no
 log_facility=LOG_LOCAL0
-fork=yes
 children=4
 
 /* uncomment the next line to enable the auto temporary blacklisting of
@@ -80,9 +79,6 @@ loadmodule "acc.so"
 modparam("acc", "early_media", 0)
 modparam("acc", "report_cancels", 0)
 modparam("acc", "detect_direction", 0)
-modparam("acc", "failed_transaction_flag", "ACC_FAILED")
-modparam("acc", "log_flag", "ACC_DO")
-modparam("acc", "log_missed_flag", "ACC_MISSED")
 
 loadmodule "proto_udp.so"
 loadmodule "proto_tcp.so"
