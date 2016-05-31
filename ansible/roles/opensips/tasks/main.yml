@@ -38,9 +38,6 @@
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
     when: gitclone.changed
 
-  - name: 'Setup etc default opensips'
-    template: src=opensips.defaults.j2 dest=/etc/default/opensips mode=0644
-
   - name: 'Create opensips pid directory'
     file: path=/var/run/opensips
           state=directory
