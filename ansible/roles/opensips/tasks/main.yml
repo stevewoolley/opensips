@@ -20,7 +20,7 @@
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
     when: gitclone.changed
 
-  - name: 'Make opensips'
+  - name: 'Make opensips core'
     command: "make"
     args:
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
@@ -32,7 +32,7 @@
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
     when: gitclone.changed
 
-  - name: 'Install opensips'
+  - name: 'Install opensips and modules'
     command: "make include_modules=\"{{ opensips_modules }}\" install"
     args:
       chdir: "/usr/src/opensips_{{ opensips_major_ver }}_{{ opensips_minor_ver }}"
@@ -51,6 +51,11 @@
   - name: 'Setup opensips.cfg'
     template: src=opensips.cfg.j2
               dest=/usr/local/etc/opensips/opensips.cfg
+              mode=0644
+
+  - name: 'Setup opensipsctlrc'
+    template: src=opensipsctlrc.j2
+              dest=/usr/local/etc/opensips/opensipsctlrc
               mode=0644
 
   - name: 'Supervisor script for opensips'

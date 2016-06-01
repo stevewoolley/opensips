@@ -1,0 +1,11 @@
+---
+- name: 'Install mysql server packages'
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - mysql-server
+
+- name: 'Create database schema'
+  command: opensipsdbctl create
+  args:
+  chdir: "/usr/local/etc/opensips"
+

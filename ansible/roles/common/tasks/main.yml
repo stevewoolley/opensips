@@ -23,22 +23,22 @@
     - bison
     - flex
     - libncurses5-dev
-    - mysql-server
+    - mysql-client
     - libmysqlclient-dev
-    - libxml2-dev
     - libexpat1-dev
     - libradiusclient-ng2
     - libradiusclient-ng-dev
     - libcurl3-dev
     - libxmlrpc-core-c3
     - libxmlrpc-core-c3-dev
-    - libperl-dev
     - libsnmp-dev
     - libconfuse0
     - libconfuse-dev
     - build-essential
     - openssl
+    - libssl-dev
     - perl
+    - libperl-dev
     - libdbi-perl
     - libdbd-mysql-perl
     - libdbd-pg-perl
@@ -47,12 +47,10 @@
     - libberkeleydb-perl
     - libxml2
     - libxml2-dev
-    - libxmlrpc-core-c3-dev
     - libpcre3
     - libpcre3-dev
     - subversion
     - ngrep
-    - libssl-dev
 
 
 - name: 'Fix rsyslog'
